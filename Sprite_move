@@ -1,0 +1,42 @@
+#import pygame
+import sys, pygame
+#initialize pygame
+pygame.init()
+
+#set size screen will be
+size = width, height = 640, 480
+#speed sprite will move. call by speed[0] or speed[1]
+speed = [2, 2]
+
+#screen color
+green = 0, 100, 0
+
+#set size of the dislplay to screen variable
+screen = pygame.display.set_mode(size)
+
+#set sprite variable to get sprite from file
+sprite = pygame.image.load("C:\Users\jxw3498\Desktop\Python\sprites\sprite.png")
+#get the pygame Rect object - represents rectangular area
+spriterect = sprite.get_rect()
+
+#infinite loop
+while True:
+    for event in pygame.event.get():
+		#shutdown if QUIT event occurs
+        if event.type == pygame.QUIT: sys.exit()
+
+		#move spriterect variable at set speed
+        spriterect = spriterect.move(speed)
+		#if spriterect moves outside of screen width, reverse speed
+        if spriterect.left < 0 or spriterect.right > width:
+            speed[0] = -speed[0]
+		#if spriterect hits top or bottom of screen, reverse speed
+        if spriterect.top < 0 or spriterect.bottom > height:
+            speed[1] = -speed[1]
+		
+		#erase screen by filling with green, remove trailing images of sprite
+        screen.fill(green)
+		#draw sprite on screen. Drawing of images is handled by the "Surface.blit()" method. A blit basically means copying pixel colors from one image to another. We pass the blit method a source Surface to copy from, and a position to place the source onto the destination.
+        screen.blit(sprite, spriterect)
+		#The last thing we need to do is actually update the visible display. Pygame manages the display with a double buffer. When we are finished drawing we call the "pygame.display.flip()" method. This makes everything we have drawn on the screen Surface become visible. This buffering makes sure we only see completely drawn frames on the screen. Without it, the user would see the half completed parts of the screen as they are being created.
+        pygame.display.flip()
